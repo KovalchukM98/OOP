@@ -34,7 +34,9 @@ Array<T, size>::Array() {
 
 template<class T, int size>
 Array<T, size>::~Array() {
-    delete[] m_array;
+    if(m_array != nullptr){
+        delete[] m_array;
+    }
 }
 
 template<class T, int size>
@@ -54,8 +56,9 @@ void Array<T, size>::push(T element, int index) {
 
 template<class T, int size>
 void Array<T, size>::print() {
+    std::cout << std::endl;
     for (int i = 0; i < size_of_array; ++i) {
-        std::cout << "\n" << m_array[i] << "\n";
+        std::cout << m_array[i] << std::endl;
     }
 }
 
@@ -64,18 +67,28 @@ void Array<T, size>::deleted(int index) {
     if (index > size_of_array - 1) {
         std::cout << "\nThere is no such index\n";
     } else {
-        T *temp;
-        temp = new T[size_of_array - 1];
-        for (int i = 0, j = 0; i < size_of_array; ++i) {
-            if (i != index) {
-                temp[j] = m_array[i];
-                ++j;
-            }
+        for(int i = index; i < size_of_array; ++i){
+            m_array[i] = m_array[i+1];
         }
-        delete[] m_array;
-        m_array = temp;
-        --size_of_array;
-        if (size_of_array == 0) empty = true;
+        m_array[size_of_array-1] = 0;
+        size_of_array--;
+        if( size_of_array == 0){
+            empty = true;
+            m_array[index] = 0;
+        }
+    
+//         T *temp;
+//         temp = new T[size_of_array - 1];
+//         for (int i = 0, j = 0; i < size_of_array; ++i) {
+//             if (i != index) {
+//                 temp[j] = m_array[i];
+//                 ++j;
+//             }
+//         }
+//         delete[] m_array;
+//         m_array = temp;
+//         --size_of_array;
+//         if (size_of_array == 0) empty = true;
     }
 }
 
